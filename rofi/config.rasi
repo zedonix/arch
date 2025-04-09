@@ -1,0 +1,7 @@
+configuration {
+    modi=drun
+    show-icons=true
+    location=center
+    theme=gruvbox-dark
+    terminal=/bin/foot
+}
