@@ -50,7 +50,7 @@ swapon "${disk}3"
 install_pkgs=(
     base linux linux-firmware intel-ucode 
     networkmanager pipewire wireplumber 
-    clamav inotify-tools libnotify 
+    clamav inotify-tools libnotify sqlite
     ntfs-3g exfat-utils man-db man-pages 
     openssh neovim unzip unrar zip gzip 
     htop fastfetch bat eza fd fzf git 
