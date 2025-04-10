@@ -18,6 +18,7 @@ echo "Wiping $disk - ALL DATA WILL BE LOST!"
 parted -s "$disk" mklabel gpt
 
 # Convert swap size to MiB
+swap_size="8"
 swap_size_mib=$((swap_size * 1024))
 
 # Partition Layout
