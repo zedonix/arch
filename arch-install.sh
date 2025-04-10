@@ -14,37 +14,37 @@ read -p "Enter Disk: " disk
 disk="/dev/${disk%/}"
 
 # Input Validation
-if [[ ! -b "{$disk}" ]]; then
-    echo "Error: {$disk} is not a valid block device"
+if [[ ! -b "$disk" ]]; then
+    echo "Error: $disk is not a valid block device"
     exit 1
 fi
 
 read -p "Username: " user
-if [[ -z "{$user}" ]]; then
+if [[ -z "$user" ]]; then
     echo "Error: Username cannot be empty"
     exit 1
 fi
 
 # Partitioning
-echo "Wiping {$disk} - ALL DATA WILL BE LOST!"
-parted -s "{$disk}" mklabel gpt
+echo "Wiping $disk - ALL DATA WILL BE LOST!"
+parted -s "$disk" mklabel gpt
 
 # Partition Layout
-parted -s "{$disk}" mkpart ESP fat32 1MiB 512MiB
-parted -s "{$disk}" set 1 esp on
-parted -s "{$disk}" mkpart primary ext4 512MiB -"{$swap_size}"
-parted -s "{$disk}" mkpart primary linux-swap -"{$swap_size}" 100%
+parted -s "$disk" mkpart ESP fat32 1MiB 512MiB
+parted -s "$disk" set 1 esp on
+parted -s "$disk" mkpart primary ext4 512MiB -"$swap_size"
+parted -s "$disk" mkpart primary linux-swap -"$swap_size" 100%
 
 # Formatting
-mkfs.fat -F32 -n BOOT "{$disk}1"
-mkfs.ext4 -L ROOT "{$disk}2"
-mkswap -L SWAP "{$disk}3"
+mkfs.fat -F32 -n BOOT "${disk}1"
+mkfs.ext4 -L ROOT "${disk}2"
+mkswap -L SWAP "${disk}3"
 
 # Mounting
-mount "{$disk}2" /mnt
+mount "${disk}2" /mnt
 mkdir -p /mnt/boot
-mount "{$disk}1" /mnt/boot
-swapon "{$disk}3"
+mount "${disk}1" /mnt/boot
+swapon "${disk}3"
 
 # Base Installation
 install_pkgs=(
@@ -66,34 +66,36 @@ install_pkgs=(
     noto-fonts-cjk noto-fonts-emoji 
     texlive-latex texlive-bin
 )
-pacman -S reflector
+
+# Update the package manager and install the base system
+pacman -Sy --noconfirm reflector
 reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 pacstrap /mnt "${install_pkgs[@]}"
 
 # System Configuration
 genfstab -U /mnt >> /mnt/etc/fstab
 
-arch-chroot /mnt ln -sf "/usr/share/zoneinfo/{$timezone}" /etc/localtime
+arch-chroot /mnt ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
 arch-chroot /mnt hwclock --systohc
-arch-chroot /mnt sed -i "/{$localization}/s/^#//" /etc/locale.gen
+arch-chroot /mnt sed -i "/$localization/s/^#//" /etc/locale.gen
 arch-chroot /mnt locale-gen
-echo "LANG={$localization}" > /mnt/etc/locale.conf
+echo "LANG=$localization" > /mnt/etc/locale.conf
 
 # User Setup
-arch-chroot /mnt useradd -m -G wheel,storage,power,video,audio -s /bin/bash "{$user}"
-echo "Set password for {$user}:"
-arch-chroot /mnt passwd "{$user}"
+arch-chroot /mnt useradd -m -G wheel,storage,power,video,audio -s /bin/bash "$user"
+echo "Set password for $user:"
+arch-chroot /mnt passwd "$user"
 
 # Sudo Configuration
 echo "%wheel ALL=(ALL) ALL" > /mnt/etc/sudoers.d/wheel
 chmod 440 /mnt/etc/sudoers.d/wheel
 
 # Host Configuration
-echo "{$hostname}" > /mnt/etc/hostname
+echo "$hostname" > /mnt/etc/hostname
 cat > /mnt/etc/hosts <<EOF
 127.0.0.1   localhost
 ::1         localhost
-127.0.1.1   {$hostname}.localdomain {$hostname}
+127.0.1.1   $hostname.localdomain $hostname
 EOF
 
 # Bootloader
@@ -109,6 +111,7 @@ arch-chroot /mnt pacman -Scc --noconfirm
 echo "Set root password:"
 arch-chroot /mnt passwd
 
-umount -R /mnt
+# Unmount and finalize
 swapoff -a
-echo "Installation complete! Reboot and remove installation media."
+umount -R /mnt
+echo "Installation complete! Reboot and remove installation media."cho "Installation complete! Reboot and remove installation media."
