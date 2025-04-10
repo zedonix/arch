@@ -1,12 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-# Configuration
-timezone="Asia/Kolkata"
-localization="en_US.UTF-8"
-hostname="archlinux"
-swap_size="8"
-
 # Disk Selection
 echo "Available disks:"
 lsblk
@@ -16,12 +10,6 @@ disk="/dev/${disk%/}"
 # Input Validation
 if [[ ! -b "$disk" ]]; then
     echo "Error: $disk is not a valid block device"
-    exit 1
-fi
-
-read -p "Username: " user
-if [[ -z "$user" ]]; then
-    echo "Error: Username cannot be empty"
     exit 1
 fi
 
@@ -78,54 +66,5 @@ pacstrap /mnt "${install_pkgs[@]}"
 # System Configuration
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# Mounting /proc, /sys and /dev
-mount -t proc /proc /mnt/proc
-mount --rbind /sys /mnt/sys
-mount --make-rslave /mnt/sys
-mount --rbind /dev /mnt/dev
-mount --make-rslave /mnt/dev
-
 # Run commands in the chroot
-arch-chroot /mnt /bin/bash <<EOF
-ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
-hwclock --systohc
-sed -i "/$localization/s/^#//" /etc/locale.gen
-locale-gen
-echo "LANG=$localization" > /etc/locale.conf
-
-# User Setup
-useradd -m -G wheel,storage,power,video,audio -s /bin/bash "$user"
-echo "Set password for $user:" && passwd "$user"
-
-# Sudo Configuration
-echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/wheel
-chmod 440 /etc/sudoers.d/wheel
-
-# Host Configuration
-echo "$hostname" > /etc/hostname
-cat > /etc/hosts <<HOSTS
-127.0.0.1   localhost
-::1         localhost
-127.0.1.1   $hostname.localdomain $hostname
-HOSTS
-
-# Bootloader
-pacman -S --noconfirm grub efibootmgr
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-grub-mkconfig -o /boot/grub/grub.cfg
-
-# Services
-systemctl enable NetworkManager
-EOF
-
-# Clean up package cache
-arch-chroot /mnt pacman -Scc --noconfirm
-
-# Finalization
-echo "Set root password:"
-arch-chroot /mnt passwd
-
-# Unmount and finalize
-swapoff -a
-umount -R /mnt
-echo "Installation complete! Reboot and remove installation media."
+arch-chroot /mnt
