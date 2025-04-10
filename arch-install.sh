@@ -5,7 +5,7 @@ set -euo pipefail
 timezone="Asia/Kolkata"
 localization="en_US.UTF-8"
 hostname="archlinux"
-swap_size="8G"
+swap_size="8GB"
 
 # Disk Selection
 echo "Available disks:"
