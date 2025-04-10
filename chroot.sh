@@ -11,16 +11,17 @@ if [[ -z "$user" ]]; then
     exit 1
 fi
 
+# User Setup
+useradd -m -G wheel,storage,power,video,audio -s /bin/bash "$user"
+echo "Set password for $user:"
+passwd "$user"
+
+# Local Setup
 ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
 hwclock --systohc
 sed -i "/en_US.UTF-8/s/^#//" /etc/locale.gen
 locale-gen
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
-
-# User Setup
-useradd -m -G wheel,storage,power,video,audio -s /bin/bash "$user"
-echo "Set password for $user:"
-passwd "$user"
 
 # Sudo Configuration
 echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/wheel
