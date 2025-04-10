@@ -5,7 +5,13 @@ set -euo pipefail
 timezone="Asia/Kolkata"
 localization="en_US.UTF-8"
 hostname="archlinux"
-swap_size="8GB"
+swap_size="8GiB"
+
+# total_bytes=$(blockdev --getsize64 "$disk")
+# swap_end=$((total_bytes - 8*1024*1024*1024))
+# swap_end_mib=$((swap_end / 1048576))
+# parted -s "$disk" mkpart primary ext4 512MiB ${swap_end_mib}MiB
+# parted -s "$disk" mkpart primary linux-swap ${swap_end_mib}MiB 100%
 
 # Disk Selection
 echo "Available disks:"
