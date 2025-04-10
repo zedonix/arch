@@ -60,8 +60,6 @@ install_pkgs=(
 )
 
 # Update the package manager and install the base system
-pacman -Sy --noconfirm reflector
-reflector --latest 20 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
 pacstrap /mnt "${install_pkgs[@]}"
 
 # System Configuration
