@@ -1,11 +1,16 @@
 #!/bin/bash
+# arch-chroot /mnt pacman -S --noconfirm sbctl
+# arch-chroot /mnt sbctl create-keys
+# arch-chroot /mnt sbctl enroll-keys
+# arch-chroot /mnt sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
+# arch-chroot /mnt sbctl sign -s /boot/EFI/GRUB/grubx64.efi
 set -euo pipefail
 
 # Configuration
 timezone="Asia/Kolkata"
 localization="en_US.UTF-8"
 hostname="archlinux"
-swap_size="8GiB"
+swap_size="8"
 
 # Disk Selection
 echo "Available disks:"
@@ -30,7 +35,7 @@ echo "Wiping $disk - ALL DATA WILL BE LOST!"
 parted -s "$disk" mklabel gpt
 
 # Convert swap size to MiB
-swap_size_mib=8192  # 8GiB = 8192MiB
+swap_size_mib=$((swap_size * 1024))
 
 # Partition Layout
 parted -s "$disk" mkpart ESP fat32 1MiB 512MiB
