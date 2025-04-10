@@ -48,4 +48,4 @@ arch-chroot /mnt passwd
 
 exit
 
-echo "type umount -R /mnt"
+echo "type umount -lR /mnt"
