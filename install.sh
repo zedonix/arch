@@ -51,12 +51,10 @@ install_pkgs=(
     sway swaybg swayimg swaylock swayidle 
     chromium foot mako mpv rofi tmux 
     zathura wl-clipboard wl-clip-persist 
-    cliphist slurp pcmanfm gimp virt-manager 
-    qemu-full libvirt asciinema yt-dlp 
+    cliphist slurp pcmanfm gimp asciinema yt-dlp 
     lua python clang ttc-iosevka seatd
     ttf-iosevkaterm-nerd noto-fonts 
-    noto-fonts-cjk noto-fonts-emoji 
-    texlive-latex texlive-bin polkit
+    noto-fonts-cjk noto-fonts-emoji polkit
 )
 
 # Update the package manager and install the base system
