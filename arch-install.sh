@@ -1,9 +1,4 @@
 #!/bin/bash
-# arch-chroot /mnt pacman -S --noconfirm sbctl
-# arch-chroot /mnt sbctl create-keys
-# arch-chroot /mnt sbctl enroll-keys
-# arch-chroot /mnt sbctl sign -s /boot/EFI/BOOT/BOOTX64.EFI
-# arch-chroot /mnt sbctl sign -s /boot/EFI/GRUB/grubx64.efi
 set -euo pipefail
 
 # Configuration
@@ -83,36 +78,47 @@ pacstrap /mnt "${install_pkgs[@]}"
 # System Configuration
 genfstab -U /mnt >> /mnt/etc/fstab
 
-arch-chroot /mnt ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
-arch-chroot /mnt hwclock --systohc
-arch-chroot /mnt sed -i "/$localization/s/^#//" /etc/locale.gen
-arch-chroot /mnt locale-gen
-echo "LANG=$localization" > /mnt/etc/locale.conf
+# Mounting /proc, /sys and /dev
+mount -t proc /proc /mnt/proc
+mount --rbind /sys /mnt/sys
+mount --make-rslave /mnt/sys
+mount --rbind /dev /mnt/dev
+mount --make-rslave /mnt/dev
+
+# Run commands in the chroot
+arch-chroot /mnt /bin/bash <<EOF
+ln -sf "/usr/share/zoneinfo/$timezone" /etc/localtime
+hwclock --systohc
+sed -i "/$localization/s/^#//" /etc/locale.gen
+locale-gen
+echo "LANG=$localization" > /etc/locale.conf
 
 # User Setup
-arch-chroot /mnt useradd -m -G wheel,storage,power,video,audio -s /bin/bash "$user"
-echo "Set password for $user:"
-arch-chroot /mnt passwd "$user"
+useradd -m -G wheel,storage,power,video,audio -s /bin/bash "$user"
+echo "Set password for $user:" && passwd "$user"
 
 # Sudo Configuration
-echo "%wheel ALL=(ALL) ALL" > /mnt/etc/sudoers.d/wheel
-chmod 440 /mnt/etc/sudoers.d/wheel
+echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/wheel
+chmod 440 /etc/sudoers.d/wheel
 
 # Host Configuration
-echo "$hostname" > /mnt/etc/hostname
-cat > /mnt/etc/hosts <<EOF
+echo "$hostname" > /etc/hostname
+cat > /etc/hosts <<HOSTS
 127.0.0.1   localhost
 ::1         localhost
 127.0.1.1   $hostname.localdomain $hostname
-EOF
+HOSTS
 
 # Bootloader
-arch-chroot /mnt pacman -S --noconfirm grub efibootmgr
-arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+pacman -S --noconfirm grub efibootmgr
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
 
 # Services
-arch-chroot /mnt systemctl enable NetworkManager
+systemctl enable NetworkManager
+EOF
+
+# Clean up package cache
 arch-chroot /mnt pacman -Scc --noconfirm
 
 # Finalization
@@ -122,4 +128,4 @@ arch-chroot /mnt passwd
 # Unmount and finalize
 swapoff -a
 umount -R /mnt
-echo "Installation complete! Reboot and remove installation media."cho "Installation complete! Reboot and remove installation media."
+echo "Installation complete! Reboot and remove installation media."
