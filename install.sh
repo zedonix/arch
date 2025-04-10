@@ -40,7 +40,7 @@ swapon "${disk}3"
 
 # Base Installation
 install_pkgs=(
-    base linux linux-firmware intel-ucode 
+    base linux linux-firmware sudo intel-ucode 
     networkmanager pipewire wireplumber xorg-xwayland
     clamav inotify-tools libnotify sqlite
     ntfs-3g exfat-utils man-db man-pages 
