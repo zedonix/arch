@@ -24,7 +24,6 @@ passwd "$user"
 
 # Sudo Configuration
 echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/wheel
-chmod 440 /etc/sudoers.d/wheel
 
 # Host Configuration
 echo "${hostname}" > /etc/hostname
