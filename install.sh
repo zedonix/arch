@@ -53,10 +53,10 @@ install_pkgs=(
     zathura wl-clipboard wl-clip-persist 
     cliphist slurp pcmanfm gimp virt-manager 
     qemu-full libvirt asciinema yt-dlp 
-    lua python clang ttc-iosevka 
+    lua python clang ttc-iosevka seatd
     ttf-iosevkaterm-nerd noto-fonts 
     noto-fonts-cjk noto-fonts-emoji 
-    texlive-latex texlive-bin
+    texlive-latex texlive-bin polkit
 )
 
 # Update the package manager and install the base system
