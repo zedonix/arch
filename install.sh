@@ -14,8 +14,6 @@ if [[ ! -b "$disk" ]]; then
 fi
 
 # Partitioning
-echo "Wiping $disk - ALL DATA WILL BE LOST!"
-wipefs -a ${disk}
 parted -s "$disk" mklabel gpt
 
 # Convert swap size to MiB
