@@ -52,8 +52,8 @@ install_pkgs=(
     chromium foot mako mpv rofi-wayland tmux 
     zathura wl-clipboard wl-clip-persist 
     cliphist slurp pcmanfm gimp asciinema yt-dlp 
-    lua python clang ttc-iosevka seatd
-    ttf-iosevkaterm-nerd noto-fonts 
+    lua python clang ttc-iosevka seatd go
+    ttf-iosevkaterm-nerd noto-fonts xdg-utils
     noto-fonts-cjk noto-fonts-emoji polkit
 )
 
