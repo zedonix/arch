@@ -40,13 +40,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 # Services
 systemctl enable NetworkManager
 
-# Clean up package cache
-arch-chroot /mnt pacman -Scc --noconfirm
-
-# Finalization
-echo "Set root password:"
-arch-chroot /mnt passwd
-
+# Clean up package cache and Wrapping up
+pacman -Scc --noconfirm
 exit
-
 echo "type umount -lR /mnt"
