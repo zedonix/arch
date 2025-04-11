@@ -19,7 +19,7 @@ wipefs -a ${disk}
 parted -s "$disk" mklabel gpt
 
 # Convert swap size to MiB
-swape="8GiB"
+swap="8GiB"
 swap_mib=$((swap * 1024))
 
 # Partition Layout
