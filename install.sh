@@ -19,14 +19,14 @@ wipefs -a ${disk}
 parted -s "$disk" mklabel gpt
 
 # Convert swap size to MiB
-swap="8GiB"
+swap="8"
 swap_mib=$((swap * 1024))
 
 # Partition Layout
 parted -s "$disk" mkpart ESP fat32 1MiB 1025MiB
 parted -s "$disk" set 1 esp on
-parted -s "$disk" mkpart primary linux-swap 1025MiB "${swap}"
-parted -s "$disk" mkpart primary ext4 "${swap}" 100%
+parted -s "$disk" mkpart primary linux-swap 1025MiB $((1025 + swap_mib))MiB
+parted -s "$disk" mkpart primary ext4 $((1025 + swap_mib))MiB 100%
 
 # Formatting
 mkfs.fat -F32 -n BOOT "${disk}1"
