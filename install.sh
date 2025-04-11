@@ -22,10 +22,11 @@ swap_size="8"
 swap_size_mib=$((swap_size * 1024))
 
 # Partition Layout
+# Modified Partition Layout
 parted -s "$disk" mkpart ESP fat32 1MiB 512MiB
 parted -s "$disk" set 1 esp on
-parted -s "$disk" mkpart primary ext4 512MiB $((512 + swap_size_mib))MiB
-parted -s "$disk" mkpart primary linux-swap $((512 + swap_size_mib))MiB 100%
+parted -s "$disk" mkpart primary linux-swap 512MiB $((512 + swap_size_mib))MiB
+parted -s "$disk" mkpart primary ext4 $((512 + swap_size_mib))MiB 100%
 
 # Formatting
 mkfs.fat -F32 -n BOOT "${disk}1"
