@@ -30,14 +30,14 @@ parted -s "$disk" mkpart primary ext4 $((512 + swap_size_mib))MiB 100%
 
 # Formatting
 mkfs.fat -F32 -n BOOT "${disk}1"
-mkfs.ext4 -L ROOT "${disk}2"
-mkswap -L SWAP "${disk}3"
+mkswap -L SWAP "${disk}2"
+mkfs.ext4 -L ROOT "${disk}3"
 
 # Mounting
-mount "${disk}2" /mnt
+mount "${disk}3" /mnt
 mkdir -p /mnt/boot
 mount "${disk}1" /mnt/boot
-swapon "${disk}3"
+swapon "${disk}2"
 
 # Base Installation
 install_pkgs=(
