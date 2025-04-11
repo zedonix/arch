@@ -10,7 +10,8 @@ set $menu exec rofi -show run
 set $browser exec chromium
 set $fileBrowser exec pcmanfm
 
-set $paste exec cliphist list | tofi | cliphist decode | wl-copy
+set $paste exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
+
 set $screenshot exec shotman --capture
 set $swaylock exec swaylock -f -c 000000
 set $htop $term -a 'htop' htop
