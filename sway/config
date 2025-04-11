@@ -8,11 +8,11 @@ set $right l
 set $term exec foot
 set $menu exec fuzzel
 set $browser exec chromium
-set $fileBrowser exec pcmanfm
+set $fileBrowser exec thunar
 
 set $paste exec cliphist list | fuzzel --dmenu --width=100 | cliphist decode | wl-copy
 
-set $screenshot exec grim -g "$(slurp)" "$HOME/Pictures/Screenshots/$(date '+%d-%m-%Y_%H-%M-%S').png"
+set $screenshot exec shotman --capture
 set $swaylock exec swaylock -f -c 000000
 set $htop $term -a 'htop' htop
 
@@ -45,7 +45,9 @@ bindsym $mod+p $paste
 bindsym control+Shift+l $swaylock
 bindsym control+Shift+escape $htop
 
-bindsym Print $screenshot
+bindsym Print $screenshot region
+bindsym Shift+Print $screenshot output
+bindsym Ctrl+Print $screenshot window
 
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
@@ -124,7 +126,7 @@ bar {
     status_command ~/.config/sway/bar.sh
     colors {
         statusline #abb2bf
-        background #ffffff00
+        # background #ffffff00
         inactive_workspace #282c34 #282c34  #5c5c5c
         focused_workspace #458588 #458588 #ebdbb2
         active_workspace #83a598 #83a598 #282828
@@ -132,7 +134,7 @@ bar {
 }
 bindsym $mod+m bar mode toggle
 
-output * bg ./nixos.png fill
+output * bg ./arch.png fill
 
 ### Input Configuration
 # Example for configuring input devices
