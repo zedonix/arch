@@ -48,11 +48,11 @@ install_pkgs=(
     newsboat ripgrep xdg-desktop-portal-wlr 
     xdg-desktop-portal-gtk papirus-icon-theme 
     sway swaybg swayimg swaylock swayidle 
-    chromium foot mako mpv rofi-wayland tmux 
-    zathura wl-clipboard wl-clip-persist 
-    cliphist slurp pcmanfm gimp asciinema yt-dlp 
+    chromium foot mako mpv fuzzel tmux 
+    zathura wl-clipboard cliphist
+    grim slurp pcmanfm gimp asciinema yt-dlp 
     lua python clang ttc-iosevka seatd go
-    ttf-iosevkaterm-nerd noto-fonts xdg-utils
+    noto-fonts xdg-utils
     noto-fonts-cjk noto-fonts-emoji polkit
 )
 
