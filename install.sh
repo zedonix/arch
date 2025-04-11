@@ -51,7 +51,7 @@ install_pkgs=(
     chromium foot mako mpv fuzzel tmux 
     qemu-full libvirt virt-manager texlive-latex texlive-bin
     zathura wl-clipboard cliphist mtools dosfstools
-    grim slurp thunar gimp asciinema yt-dlp 
+    grim slurp pcmanfm gimp asciinema yt-dlp 
     lua python clang ttc-iosevka seatd go
     noto-fonts xdg-utils xdg-desktop-portal
     noto-fonts-cjk noto-fonts-emoji polkit

@@ -1,0 +1,5 @@
+gtk/qt theme and icons
+ufw and clamav setup
+aur
+
+aur - sway-audio-idle-inhibit-git, shotman, wlogout, onlyoffice-bin, ttf-ms-fonts, ungoogled-chromium-bin, aurutils, github-cli-git

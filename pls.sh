@@ -48,7 +48,7 @@ install_pkgs=(
     newsboat ripgrep xdg-desktop-portal-wlr 
     xdg-desktop-portal-gtk papirus-icon-theme 
     sway swaybg swayimg swaylock swayidle 
-    chromium foot mako mpv fuzzel tmux 
+    chromium foot mako mpv fuzzel tmux ufw
     qemu-full libvirt virt-manager texlive-latex texlive-bin
     zathura wl-clipboard cliphist mtools dosfstools
     grim slurp thunar gimp asciinema yt-dlp 

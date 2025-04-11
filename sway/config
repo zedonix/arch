@@ -8,12 +8,11 @@ set $right l
 set $term exec foot
 set $menu exec fuzzel
 set $browser exec chromium
-set $fileBrowser exec thunar
+set $fileBrowser exec pcmanfm
 
 set $paste exec cliphist list | fuzzel --dmenu --width=100 | cliphist decode | wl-copy
 
 set $screenshot exec shotman --capture
-set $swaylock exec swaylock -f -c 000000
 set $htop $term -a 'htop' htop
 
 for_window [app_id="htop"] floating enable
@@ -42,7 +41,7 @@ bindsym $mod+Shift+p $browser --incognito
 bindsym $mod+e $fileBrowser
 
 bindsym $mod+p $paste
-bindsym control+Shift+l $swaylock
+bindsym control+Shift+l exec wlogout -b4 -m300
 bindsym control+Shift+escape $htop
 
 bindsym Print $screenshot region
@@ -126,7 +125,7 @@ bar {
     status_command ~/.config/sway/bar.sh
     colors {
         statusline #abb2bf
-        # background #ffffff00
+        background #1d2021
         inactive_workspace #282c34 #282c34  #5c5c5c
         focused_workspace #458588 #458588 #ebdbb2
         active_workspace #83a598 #83a598 #282828
