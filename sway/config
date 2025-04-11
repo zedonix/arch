@@ -6,13 +6,13 @@ set $up k
 set $right l
 
 set $term exec foot
-set $menu exec rofi -show run
+set $menu exec fuzzel
 set $browser exec chromium
 set $fileBrowser exec pcmanfm
 
-set $paste exec cliphist list | rofi -dmenu | cliphist decode | wl-copy
+set $paste exec cliphist list | fuzzel --dmenu --width=100 | cliphist decode | wl-copy
 
-set $screenshot exec shotman --capture
+set $screenshot exec grim -g "$(slurp)" "$HOME/Pictures/Screenshots/$(date '+%d-%m-%Y_%H-%M-%S').png"
 set $swaylock exec swaylock -f -c 000000
 set $htop $term -a 'htop' htop
 
@@ -20,7 +20,6 @@ for_window [app_id="htop"] floating enable
 
 exec wl-paste --type text --watch cliphist store
 exec wl-paste --type image --watch cliphist store
-exec wl-clip-persist --clipboard regular
 
 exec mako
 exec sway-audio-idle-inhibit
@@ -34,7 +33,7 @@ exec swayidle -w \
 floating_modifier $mod normal
 bindsym $mod+Shift+q kill
 bindsym $mod+Shift+c reload
-bindsym $mod+Shift+e exec swaynag -t warning -m 'Do you really want to exit sway?' -B 'Yes' 'swaymsg exit'
+bindsym $mod+Shift+e exec swaynag -t warning -m 'Do you really want to exit sway?' -B 'Yes' 'swaymsg exit' 'sleep 1 && swaymsg exit'
 
 bindsym $mod+Return $term
 bindsym $mod+space $menu
@@ -46,9 +45,7 @@ bindsym $mod+p $paste
 bindsym control+Shift+l $swaylock
 bindsym control+Shift+escape $htop
 
-bindsym Print $screenshot region
-bindsym Shift+Print $screenshot output
-bindsym Ctrl+Print $screenshot window
+bindsym Print $screenshot
 
 bindsym $mod+$left focus left
 bindsym $mod+$down focus down
@@ -148,9 +145,6 @@ output * bg ./nixos.png fill
 
 input "type:pointer" accel_profile flat
 input "type:keyboard" xkb_options caps:swapescape
-input * {
-    xkb_layout "us"
-}
 
 seat * hide_cursor 3000
 
