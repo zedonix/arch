@@ -6,7 +6,7 @@ set $up k
 set $right l
 
 set $term exec foot
-set $menu exec tofi-run | xargs swaymsg exec --
+set $menu exec rofi -show run
 set $browser exec chromium
 set $fileBrowser exec pcmanfm
 
